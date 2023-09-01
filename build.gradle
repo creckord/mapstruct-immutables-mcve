@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+description 'MapStruct repro'
+version '0.0.1-SNAPSHOT'
+
+sourceCompatibility = 17
+targetCompatibility = 17
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    //Managed by us
+    annotationProcessor 'org.immutables:value:2.9.3'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    implementation 'org.immutables:value:2.9.3'
+}
+
+compileJava {
+    options.compilerArgs += [
+            '-Amapstruct.unmappedTargetPolicy=ERROR'
+    ]
+}
+
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    tasks.withType(Test) {
+        systemProperty "file.encoding", "UTF-8"
+    }
+}
